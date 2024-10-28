@@ -20,3 +20,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include routers
+app.include_router(
+    documents.router,
+    prefix=settings.API_V1_STR + "/documents",
+    tags=["documents"]
+)
+
+# Add WebSocket endpoint
+app.include_router(qa.router)
+
