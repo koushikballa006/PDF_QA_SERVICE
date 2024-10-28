@@ -13,3 +13,30 @@ class Settings(BaseSettings):
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: str = "5432"
     POSTGRES_DB: str = "pdf_qa_db"
+
+    # SQLAlchemy Database URL
+    @property
+    def DATABASE_URL(self) -> str:
+        return (
+            f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@"
+            f"{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        )
+    # Storage
+    UPLOAD_DIR: str = "storage/pdfs"
+    EXTRACTED_TEXT_DIR: str = "storage/extracted_text"
+
+    # Rate Limiting
+    RATE_LIMIT_PER_MINUTE: int = 60
+    WS_RATE_LIMIT_PER_MINUTE: int = 30
+    
+    # Token Settings
+    SECRET_KEY: str = "your-secret-key-here"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+
+    class Config:
+        case_sensitive = True
+        env_file = ".env"
+
+@lru_cache()
+def get_settings():
+    return Settings()    
